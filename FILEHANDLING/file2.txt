@@ -1,0 +1,12 @@
+
+Name: samarjeet
+Age: 20
+Roll No: 2253008
+
+Name: raju
+Age: 2253089
+Roll No: 2253089
+
+Name: rani
+Age: 23
+Roll No: 22
