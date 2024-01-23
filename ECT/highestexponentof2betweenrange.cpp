@@ -27,3 +27,31 @@ int main() {
     
     return 0;
 }
+
+
+///logic 2
+int main() {
+    // Write C++ code here
+    int s;
+    int e;
+
+    
+    cin>>s;
+    cin>>e;
+    
+    int i=1;
+    int max=0;
+    
+    while(i<=e){
+        if(i>=s){
+           max=i;
+        }
+       // i*=2;
+        i=i<<1;
+        
+    }
+    cout<<max;
+   
+    
+    return 0;
+}
