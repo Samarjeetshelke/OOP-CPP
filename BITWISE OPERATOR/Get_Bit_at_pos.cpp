@@ -18,3 +18,24 @@ int main() {
 
     return 0;
 }
+///using BitMask
+
+#include <iostream>
+#include<algorithm>
+using namespace std;
+
+int main() {
+    int n =5;//0101
+    int pos =2;
+    
+    int msk = 1<<2;//001 -> 100
+    
+    if((msk&n)){//0101 & 0100   if it return more then 0 ans then its 1
+        cout<<1;
+    }
+    else{
+        cout<<0;
+    }
+    
+    return 0;
+}
