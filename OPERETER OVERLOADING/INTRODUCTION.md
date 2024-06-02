@@ -1,155 +1,107 @@
-#OPERATOR OVERLOADING:-
+Operator overloading in C++ allows you to redefine the way operators work with user-defined types, such as classes and structures. It enables you to use operators like `+`, `-`, `*`, `/`, etc., with your custom types, making your code more expressive and readable. Here's how you can overload operators:
 
-In C++, we can make operators to work for user defined classes. This means C++ has the ability to provide the operators with a special meaning for a data type, 
-this ability is known as operator overloading. For example, we can overload an operator ‘+’ in a class like String so that we can concatenate two strings by just using +.
-Other example classes where arithmetic operators may be overloaded are Complex Number, Fractional Number, Big Integer, etc.
+### Syntax:
 
-A simple and complete example
-
-
-#include<iostream>
-using namespace std;
-  
-class Complex {
-private:
-    int real, imag;
-public:
-    Complex(int r = 0, int i =0)  {real = r;   imag = i;}
-      
-    // This is automatically called when '+' is used with
-    // between two Complex objects
-    Complex operator + (Complex const &obj) {
-         Complex res;
-         res.real = real + obj.real;
-         res.imag = imag + obj.imag;
-         return res;
-    }
-    void print() { cout << real << " + i" << imag << endl; }
-};
-  
-int main()
-{
-    Complex c1(10, 5), c2(2, 4);
-    Complex c3 = c1 + c2; // An example call to "operator+"
-    c3.print();
+```cpp
+return-type operator op(parameters) {
+    // Code to define the behavior of the operator
 }
-  
-#Output:
+```
 
-12 + i9
+Where `op` is the operator you want to overload, and `return-type` is the type of value returned by the operator.
 
+### Example: Overloading the `+` Operator
 
-#What is the difference between operator functions and normal functions?
-  
-Operator functions are same as normal functions. The only differences are, name of an operator function is always operator keyword followed by symbol of operator and operator functions are called when the corresponding operator is used.
-Following is an example of global operator function.
-
-
-#include<iostream>
-using namespace std;
-  
-class Complex {
-private:
-    int real, imag;
-public:
-    Complex(int r = 0, int i =0)  {real = r;   imag = i;}
-    void print() { cout << real << " + i" << imag << endl; }
-  
-// The global operator function is made friend of this class so
-// that it can access private members
-friend Complex operator + (Complex const &, Complex const &);
-};
-  
-  
-Complex operator + (Complex const &c1, Complex const &c2)
-{
-     return Complex(c1.real + c2.real, c1.imag + c2.imag);
-}
-  
-  
-int main()
-{
-    Complex c1(10, 5), c2(2, 4);
-    Complex c3 = c1 + c2; // An example call to "operator+"
-    c3.print();
-    return 0;
-}
-  
-#Can we overload all operators?
-  
-Almost all operators can be overloaded except few. Following is the list of operators that cannot be overloaded.
-
-   . (dot) 
-   :: 
-   ?: 
-   sizeof 
-
-  #Why can’t . (dot), ::, ?: and sizeof be overloaded?
-  
-See this for answers from Stroustrup himself.
-
-Important points about operator overloading
-1) For operator overloading to work, at least one of the operands must be a user defined class object.
-
-2) Assignment Operator: Compiler automatically creates a default assignment operator with every class. The default assignment operator does assign all members of right side to the left side and works fine most of the cases (this behavior is same as copy constructor). See this for more details.
-
-3) Conversion Operator: We can also write conversion operators that can be used to convert one type to another type.
-
-
+```cpp
 #include <iostream>
 using namespace std;
-class Fraction
-{
-    int num, den;
+
+class Complex {
+private:
+    int real;
+    int imaginary;
+
 public:
-    Fraction(int n,  int d) { num = n; den = d; }
-  
-    // conversion operator: return float value of fraction
-    operator float() const {
-        return float(num) / float(den);
+    Complex(int r = 0, int i = 0) : real(r), imaginary(i) {}
+
+    // Overloading the + operator to add two Complex objects
+    Complex operator+(const Complex& other) {
+        Complex temp;
+        temp.real = real + other.real;
+        temp.imaginary = imaginary + other.imaginary;
+        return temp;
+    }
+
+    void display() {
+        cout << real << " + " << imaginary << "i" << endl;
     }
 };
-  
+
 int main() {
-    Fraction f(2, 5);
-    float val = f;
-    cout << val;
+    Complex c1(2, 3);
+    Complex c2(4, 5);
+    Complex sum = c1 + c2;
+    sum.display();
     return 0;
 }
-  
-#Output:
+```
 
-0.4
-Overloaded conversion operators must be a member method. Other operators can either be member method or global method.
+### Common Operator Overloading Examples:
 
-4) Any constructor that can be called with a single argument works as a conversion constructor, means it can also be used for implicit conversion to the class being constructed.
+1. **Arithmetic Operators**: `+`, `-`, `*`, `/`, `%`
+2. **Comparison Operators**: `==`, `!=`, `>`, `<`, `>=`, `<=`
+3. **Unary Operators**: `++`, `--`, `!`, `-`
+4. **Assignment Operators**: `=`, `+=`, `-=`, `*=`, `/=`, `%=`
+5. **Stream Operators**: `<<` (output), `>>` (input)
 
+### Rules for Operator Overloading:
 
-#include<iostream> 
+1. You cannot create new operators or change the precedence of existing operators.
+2. Overloaded operators must have at least one operand of a user-defined type.
+3. Most operators can be overloaded as member functions or global functions.
+
+### Overloading as Member vs. Non-Member Functions:
+
+- **Member Function**: If you overload an operator as a member function, the left operand will be the calling object.
+- **Non-Member Function**: If you overload an operator as a non-member function, both operands must be explicitly passed.
+
+### Example: Overloading the `<<` Operator (Non-Member Function)
+
+```cpp
+#include <iostream>
 using namespace std;
-  
-class Point
-{
+
+class Point {
 private:
     int x, y;
+
 public:
-    Point(int i = 0, int j = 0) {
-        x = i;   y = j;
-    }
-    void print() {
-        cout << endl << " x = " << x << ", y = " << y;
-    }
+    Point(int x = 0, int y = 0) : x(x), y(y) {}
+
+    friend ostream& operator<<(ostream& out, const Point& point);
 };
-  
+
+ostream& operator<<(ostream& out, const Point& point) {
+    out << "(" << point.x << ", " << point.y << ")";
+    return out;
+}
+
 int main() {
-    Point t(20, 20);
-    t.print();
-    t = 30;   // Member x of t becomes 30
-    t.print();
+    Point p(10, 20);
+    cout << p;
     return 0;
 }
-  
-#Output:
+```
 
- x = 20, y = 20
- x = 30, y = 0
+### Advantages of Operator Overloading:
+
+1. Makes code more readable and expressive.
+2. Enables you to use operators with user-defined types, making the code more natural.
+3. Allows you to define operators in a way that is meaningful for your custom types.
+
+### Limitations of Operator Overloading:
+
+1. Can lead to confusion if not used carefully, especially when the overloaded operators have different meanings from their usual ones.
+2. Should be used judiciously to avoid code that is difficult to understand or maintain.
+
+Operator overloading is a powerful feature of C++ that can be used to write concise and expressive code. However, it should be used with care to ensure that the code remains readable and maintainable.
