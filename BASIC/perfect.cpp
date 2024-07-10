@@ -26,3 +26,32 @@ int main() {
     }
     return 0;
 }
+
+
+
+//more Optimized
+#include <iostream>
+using namespace std;
+
+int main() {
+    // Write C++ code here
+   
+    int n =8 ;
+    int sum =0;
+    int i=1;
+    
+    while(i<=(n/2)){
+        if(n%i==0)
+            sum+=i;
+            
+        i++;
+    }
+    
+    if(sum==n){
+        cout<<"Perfect";
+    }
+    
+     
+
+    return 0;
+}
